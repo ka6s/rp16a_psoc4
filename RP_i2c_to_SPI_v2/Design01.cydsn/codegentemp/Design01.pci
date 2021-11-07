@@ -1,0 +1,22 @@
+# Design01
+# 2021-11-07 21:18:41Z
+
+# IO_2@[IOP=(3)][IoId=(2)] is reserved: SWDDebugEnabled
+dont_use_io iocell 3 2
+# IO_3@[IOP=(3)][IoId=(3)] is reserved: SWDDebugEnabled
+dont_use_io iocell 3 3
+dont_use_location cancell -1 -1 0
+dont_use_location m0s8scbcell -1 -1 4
+dont_use_location SCB -1 -1 4
+set_location "ClockGenBlock" m0s8clockgenblockcell -1 -1 0
+set_io "\I2C:sda(0)\" iocell 1 1
+set_io "\I2C:scl(0)\" iocell 1 0
+set_io "\UART:tx(0)\" iocell 0 5
+set_io "\SPI:ss2_m(0)\" iocell 2 5
+set_io "\SPI:ss1_m(0)\" iocell 0 7
+set_io "\SPI:sclk_m(0)\" iocell 0 6
+set_io "\SPI:mosi_m(0)\" iocell 0 4
+set_io "\SPI:ss0_m(0)\" iocell 2 4
+set_io "ant1(0)" iocell 2 0
+set_io "ant2(0)" iocell 2 1
+set_io "ant3(0)" iocell 2 2

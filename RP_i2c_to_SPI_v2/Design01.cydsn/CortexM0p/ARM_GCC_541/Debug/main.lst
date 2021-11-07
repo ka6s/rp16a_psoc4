@@ -1,0 +1,1389 @@
+ARM GAS  C:\Users\DADSPC~1\AppData\Local\Temp\ccNXNUFC.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0plus
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"main.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.pollI2CwriteBuffer,"ax",%progbits
+  20              		.align	2
+  21              		.code	16
+  22              		.thumb_func
+  23              		.type	pollI2CwriteBuffer, %function
+  24              	pollI2CwriteBuffer:
+  25              	.LFB34:
+  26              		.file 1 "main.c"
+   1:main.c        **** /* ========================================
+   2:main.c        ****  *
+   3:main.c        ****  * Copyright KA6S, 2021
+   4:main.c        ****  * All Rights Reserved
+   5:main.c        ****  * UNPUBLISHED, LICENSED SOFTWARE.
+   6:main.c        ****  *
+   7:main.c        ****  *
+   8:main.c        ****  *
+   9:main.c        ****  * ========================================
+  10:main.c        **** */
+  11:main.c        **** #include "project.h"
+  12:main.c        **** 
+  13:main.c        **** /* Valid command packet size of five bytes */
+  14:main.c        **** #define PACKET_SIZE          (0x05u)
+  15:main.c        **** 
+  16:main.c        **** /* Master write and read buffer of size five and three bytes */
+  17:main.c        **** #define SL_RD_BUFFER_SIZE    (0x03u)
+  18:main.c        **** #define SL_WR_BUFFER_SIZE    (PACKET_SIZE)
+  19:main.c        **** 
+  20:main.c        **** /* Start and end of packet markers */
+  21:main.c        **** #define PACKET_SOP           (0x01u)
+  22:main.c        **** #define PACKET_EOP           (0x17u)
+  23:main.c        **** 
+  24:main.c        **** /* Command valid status */
+  25:main.c        **** #define STS_CMD_DONE         (0x00u)
+  26:main.c        **** #define STS_CMD_FAIL         (0xFFu)
+  27:main.c        **** 
+  28:main.c        **** /* Packet positions */
+  29:main.c        **** #define PACKET_SOP_POS       (0x00u)
+  30:main.c        **** #define PACKET_STS_POS       (0x01u)
+  31:main.c        **** #define PACKET_RED_POS       (0x01u)
+ARM GAS  C:\Users\DADSPC~1\AppData\Local\Temp\ccNXNUFC.s 			page 2
+
+
+  32:main.c        **** #define PACKET_GREEN_POS     (0x02u)
+  33:main.c        **** #define PACKET_BLUE_POS      (0x03u)
+  34:main.c        **** #define PACKET_EOP_POS       (0x04u)
+  35:main.c        **** 
+  36:main.c        **** 
+  37:main.c        **** /* Controls the frequency at which the light changes */
+  38:main.c        **** #define CMD_TO_CMD_DELAY    (500u)
+  39:main.c        **** #define CMD_STALL           (20u)
+  40:main.c        **** 
+  41:main.c        **** // SPI
+  42:main.c        **** #define BUFFER_SIZE (64UL)
+  43:main.c        **** /* Data buffers */
+  44:main.c        **** 
+  45:main.c        **** 
+  46:main.c        **** 
+  47:main.c        **** /*******************************************************************************
+  48:main.c        **** * Function prototypes
+  49:main.c        **** *******************************************************************************/
+  50:main.c        **** static void pollI2CwriteBuffer(void);
+  51:main.c        **** 
+  52:main.c        **** /* I2C read and write buffers */
+  53:main.c        **** uint8_t i2cReadBuffer [SL_RD_BUFFER_SIZE] = {PACKET_SOP, STS_CMD_FAIL, PACKET_EOP};
+  54:main.c        **** uint8_t i2cWriteBuffer[SL_WR_BUFFER_SIZE] ;
+  55:main.c        **** 
+  56:main.c        **** // SPI read/write buffers
+  57:main.c        **** /*
+  58:main.c        **** uint8_t bufferTX(BUFFER_SIZE);  
+  59:main.c        **** uint8_t bufferRX(BUFFER_SIZE);
+  60:main.c        **** */
+  61:main.c        **** 
+  62:main.c        **** 
+  63:main.c        **** int main(void)
+  64:main.c        **** {
+  65:main.c        ****     CyGlobalIntEnable; /* Enable global interrupts. */
+  66:main.c        **** 
+  67:main.c        ****     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
+  68:main.c        ****     SPI_Start();
+  69:main.c        ****     
+  70:main.c        ****     // Turn off all of the Antenna controls - leaving 1 enabled at reset
+  71:main.c        ****     ant1_Write(1);
+  72:main.c        ****     ant2_Write(0);
+  73:main.c        ****     ant3_Write(0);
+  74:main.c        ****     
+  75:main.c        **** 
+  76:main.c        ****    
+  77:main.c        ****     /* Initialize and enable I2C component in slave mode. */
+  78:main.c        ****     I2C_I2CSlaveInitReadBuf (i2cReadBuffer,  BUFFER_SIZE);
+  79:main.c        ****     I2C_I2CSlaveInitWriteBuf(i2cWriteBuffer, BUFFER_SIZE);
+  80:main.c        ****     I2C_Start();
+  81:main.c        **** 
+  82:main.c        ****     for(;;)
+  83:main.c        ****     {
+  84:main.c        ****        /* continuously poll to check whether master has 
+  85:main.c        ****           written  data to write buffer. */
+  86:main.c        ****        pollI2CwriteBuffer();
+  87:main.c        ****        /* Poll every 1ms */
+  88:main.c        ****         CyDelay(1);   // Redefine this for 1ms 
+ARM GAS  C:\Users\DADSPC~1\AppData\Local\Temp\ccNXNUFC.s 			page 3
+
+
+  89:main.c        ****     }
+  90:main.c        **** 
+  91:main.c        **** 
+  92:main.c        **** }
+  93:main.c        **** /*******************************************************************************
+  94:main.c        **** * Function Name: pollI2CwriteBuffer
+  95:main.c        **** ****************************************************************************//**
+  96:main.c        **** *
+  97:main.c        **** * Checks the status of slave to know if any data is written by master into write
+  98:main.c        **** * buffer. If data is written, check for error. If no error while writing 
+  99:main.c        **** * then check whether required number of bytes is written. If required number of bytes are 
+ 100:main.c        **** * written, if start and end packets are correct set the TCPWM compare value to the respective 
+ 101:main.c        **** * RGB LED TCPWM's to control the color.
+ 102:main.c        **** *
+ 103:main.c        **** * \param None
+ 104:main.c        **** *
+ 105:main.c        **** * \return
+ 106:main.c        **** *  None
+ 107:main.c        **** *
+ 108:main.c        **** *******************************************************************************/
+ 109:main.c        **** static void pollI2CwriteBuffer(void)
+ 110:main.c        **** {
+  27              		.loc 1 110 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31 0000 10B5     		push	{r4, lr}
+  32              		.cfi_def_cfa_offset 8
+  33              		.cfi_offset 4, -8
+  34              		.cfi_offset 14, -4
+ 111:main.c        ****     int work;
+ 112:main.c        ****     if( 0UL != (I2C_I2CSlaveStatus() & I2C_I2C_SSTAT_WR_CMPLT))
+  35              		.loc 1 112 0
+  36 0002 FFF7FEFF 		bl	I2C_I2CSlaveStatus
+  37              	.LVL0:
+  38 0006 C306     		lsls	r3, r0, #27
+  39 0008 46D5     		bpl	.L1
+ 113:main.c        ****     {
+ 114:main.c        ****  
+ 115:main.c        ****      if (PACKET_SIZE == I2C_I2CSlaveGetWriteBufSize() ) 
+  40              		.loc 1 115 0
+  41 000a FFF7FEFF 		bl	I2C_I2CSlaveGetWriteBufSize
+  42              	.LVL1:
+  43 000e 0528     		cmp	r0, #5
+  44 0010 36D1     		bne	.L3
+ 116:main.c        ****         {
+ 117:main.c        ****            
+ 118:main.c        ****          /* Check start and end of packet markers. */
+ 119:main.c        ****          if ((i2cWriteBuffer[PACKET_SOP_POS] == PACKET_SOP) &&
+  45              		.loc 1 119 0
+  46 0012 224B     		ldr	r3, .L7
+  47 0014 1B78     		ldrb	r3, [r3]
+  48 0016 012B     		cmp	r3, #1
+  49 0018 32D1     		bne	.L3
+ 120:main.c        ****              (i2cWriteBuffer[PACKET_EOP_POS] == PACKET_EOP))
+  50              		.loc 1 120 0 discriminator 1
+  51 001a 204A     		ldr	r2, .L7
+ARM GAS  C:\Users\DADSPC~1\AppData\Local\Temp\ccNXNUFC.s 			page 4
+
+
+  52 001c 1279     		ldrb	r2, [r2, #4]
+ 119:main.c        ****              (i2cWriteBuffer[PACKET_EOP_POS] == PACKET_EOP))
+  53              		.loc 1 119 0 discriminator 1
+  54 001e 172A     		cmp	r2, #23
+  55 0020 2ED1     		bne	.L3
+ 121:main.c        ****             {                  
+ 122:main.c        ****               // Send SPI message                   
+ 123:main.c        ****               if(i2cWriteBuffer[PACKET_SOP_POS] == 0x1) 
+  56              		.loc 1 123 0
+  57 0022 012B     		cmp	r3, #1
+  58 0024 07D1     		bne	.L4
+ 124:main.c        ****                 {
+ 125:main.c        ****                   // ALEX RX control
+ 126:main.c        ****                   // Need SS select = 2
+ 127:main.c        ****                   SPI_SpiSetActiveSlaveSelect(SPI_SPI_SLAVE_SELECT2);
+  59              		.loc 1 127 0
+  60 0026 0338     		subs	r0, r0, #3
+  61 0028 FFF7FEFF 		bl	SPI_SpiSetActiveSlaveSelect
+  62              	.LVL2:
+ 128:main.c        ****                   SPI_SpiUartPutArray(i2cWriteBuffer[PACKET_SOP_POS+1], 2);
+  63              		.loc 1 128 0
+  64 002c 1B4B     		ldr	r3, .L7
+  65 002e 5878     		ldrb	r0, [r3, #1]
+  66 0030 0221     		movs	r1, #2
+  67 0032 FFF7FEFF 		bl	SPI_SpiUartPutArray
+  68              	.LVL3:
+  69              	.L4:
+ 129:main.c        ****             
+ 130:main.c        ****                 }
+ 131:main.c        ****             if(i2cWriteBuffer[PACKET_SOP_POS] == 0x2) 
+  70              		.loc 1 131 0
+  71 0036 194B     		ldr	r3, .L7
+  72 0038 1B78     		ldrb	r3, [r3]
+  73 003a 022B     		cmp	r3, #2
+  74 003c 20D1     		bne	.L3
+ 132:main.c        ****                 {
+ 133:main.c        ****                   // ALEX TX control
+ 134:main.c        ****                   // Need SS select = 1
+ 135:main.c        ****                   work = i2cWriteBuffer[PACKET_SOP_POS+1];
+  75              		.loc 1 135 0
+  76 003e 174B     		ldr	r3, .L7
+  77 0040 5C78     		ldrb	r4, [r3, #1]
+  78              	.LVL4:
+ 136:main.c        ****                   work = (work >> 4);
+  79              		.loc 1 136 0
+  80 0042 2411     		asrs	r4, r4, #4
+  81              	.LVL5:
+ 137:main.c        ****                   if(work & 0x2) {
+  82              		.loc 1 137 0
+  83 0044 A307     		lsls	r3, r4, #30
+  84 0046 08D5     		bpl	.L5
+ 138:main.c        ****                       ant1_Write(0);
+  85              		.loc 1 138 0
+  86 0048 0020     		movs	r0, #0
+  87 004a FFF7FEFF 		bl	ant1_Write
+  88              	.LVL6:
+ 139:main.c        ****                       ant2_Write(1);
+ARM GAS  C:\Users\DADSPC~1\AppData\Local\Temp\ccNXNUFC.s 			page 5
+
+
+  89              		.loc 1 139 0
+  90 004e 0120     		movs	r0, #1
+  91 0050 FFF7FEFF 		bl	ant2_Write
+  92              	.LVL7:
+ 140:main.c        ****                       ant3_Write(0);
+  93              		.loc 1 140 0
+  94 0054 0020     		movs	r0, #0
+  95 0056 FFF7FEFF 		bl	ant3_Write
+  96              	.LVL8:
+  97              	.L5:
+ 141:main.c        ****                   }
+ 142:main.c        ****                   if(work & 0x4) {
+  98              		.loc 1 142 0
+  99 005a 6307     		lsls	r3, r4, #29
+ 100 005c 08D5     		bpl	.L6
+ 143:main.c        ****                       ant1_Write(0);
+ 101              		.loc 1 143 0
+ 102 005e 0020     		movs	r0, #0
+ 103 0060 FFF7FEFF 		bl	ant1_Write
+ 104              	.LVL9:
+ 144:main.c        ****                       ant2_Write(0);
+ 105              		.loc 1 144 0
+ 106 0064 0020     		movs	r0, #0
+ 107 0066 FFF7FEFF 		bl	ant2_Write
+ 108              	.LVL10:
+ 145:main.c        ****                       ant3_Write(1);
+ 109              		.loc 1 145 0
+ 110 006a 0120     		movs	r0, #1
+ 111 006c FFF7FEFF 		bl	ant3_Write
+ 112              	.LVL11:
+ 113              	.L6:
+ 146:main.c        ****                   }
+ 147:main.c        ****                  
+ 148:main.c        ****                   SPI_SpiSetActiveSlaveSelect(SPI_SPI_SLAVE_SELECT1);
+ 114              		.loc 1 148 0
+ 115 0070 0020     		movs	r0, #0
+ 116 0072 FFF7FEFF 		bl	SPI_SpiSetActiveSlaveSelect
+ 117              	.LVL12:
+ 149:main.c        ****                   SPI_SpiUartPutArray(i2cWriteBuffer[PACKET_SOP_POS+1], 2);
+ 118              		.loc 1 149 0
+ 119 0076 094B     		ldr	r3, .L7
+ 120 0078 5878     		ldrb	r0, [r3, #1]
+ 121 007a 0221     		movs	r1, #2
+ 122 007c FFF7FEFF 		bl	SPI_SpiUartPutArray
+ 123              	.LVL13:
+ 124              	.L3:
+ 150:main.c        ****                 }
+ 151:main.c        ****             }
+ 152:main.c        ****         }
+ 153:main.c        ****        
+ 154:main.c        ****         
+ 155:main.c        ****         /* Configure write buffer for the next write. */
+ 156:main.c        ****         I2C_I2CSlaveClearWriteBuf();
+ 125              		.loc 1 156 0
+ 126 0080 FFF7FEFF 		bl	I2C_I2CSlaveClearWriteBuf
+ 127              	.LVL14:
+ 157:main.c        ****         (void) I2C_I2CSlaveClearWriteStatus();
+ARM GAS  C:\Users\DADSPC~1\AppData\Local\Temp\ccNXNUFC.s 			page 6
+
+
+ 128              		.loc 1 157 0
+ 129 0084 FFF7FEFF 		bl	I2C_I2CSlaveClearWriteStatus
+ 130              	.LVL15:
+ 158:main.c        ****        
+ 159:main.c        ****     
+ 160:main.c        ****         /* Check read complete event. */
+ 161:main.c        ****         if (0u != (I2C_I2CSlaveStatus() & I2C_I2C_SSTAT_RD_CMPLT))
+ 131              		.loc 1 161 0
+ 132 0088 FFF7FEFF 		bl	I2C_I2CSlaveStatus
+ 133              	.LVL16:
+ 134 008c C307     		lsls	r3, r0, #31
+ 135 008e 03D5     		bpl	.L1
+ 162:main.c        ****         {
+ 163:main.c        ****             /* Clear the slave read buffer and status */
+ 164:main.c        ****             I2C_I2CSlaveClearReadBuf();
+ 136              		.loc 1 164 0
+ 137 0090 FFF7FEFF 		bl	I2C_I2CSlaveClearReadBuf
+ 138              	.LVL17:
+ 165:main.c        ****             (void) I2C_I2CSlaveClearReadStatus();
+ 139              		.loc 1 165 0
+ 140 0094 FFF7FEFF 		bl	I2C_I2CSlaveClearReadStatus
+ 141              	.LVL18:
+ 142              	.L1:
+ 166:main.c        ****         }
+ 167:main.c        ****     }
+ 168:main.c        **** 
+ 169:main.c        **** }
+ 143              		.loc 1 169 0
+ 144              		@ sp needed
+ 145 0098 10BD     		pop	{r4, pc}
+ 146              	.L8:
+ 147 009a C046     		.align	2
+ 148              	.L7:
+ 149 009c 00000000 		.word	i2cWriteBuffer
+ 150              		.cfi_endproc
+ 151              	.LFE34:
+ 152              		.size	pollI2CwriteBuffer, .-pollI2CwriteBuffer
+ 153              		.section	.text.main,"ax",%progbits
+ 154              		.align	2
+ 155              		.global	main
+ 156              		.code	16
+ 157              		.thumb_func
+ 158              		.type	main, %function
+ 159              	main:
+ 160              	.LFB33:
+  64:main.c        ****     CyGlobalIntEnable; /* Enable global interrupts. */
+ 161              		.loc 1 64 0
+ 162              		.cfi_startproc
+ 163              		@ Volatile: function does not return.
+ 164              		@ args = 0, pretend = 0, frame = 0
+ 165              		@ frame_needed = 0, uses_anonymous_args = 0
+ 166 0000 10B5     		push	{r4, lr}
+ 167              		.cfi_def_cfa_offset 8
+ 168              		.cfi_offset 4, -8
+ 169              		.cfi_offset 14, -4
+  65:main.c        **** 
+ 170              		.loc 1 65 0
+ARM GAS  C:\Users\DADSPC~1\AppData\Local\Temp\ccNXNUFC.s 			page 7
+
+
+ 171              		.syntax divided
+ 172              	@ 65 "main.c" 1
+ 173 0002 62B6     		CPSIE   i
+ 174              	@ 0 "" 2
+  68:main.c        ****     
+ 175              		.loc 1 68 0
+ 176              		.thumb
+ 177              		.syntax unified
+ 178 0004 FFF7FEFF 		bl	SPI_Start
+ 179              	.LVL19:
+  71:main.c        ****     ant2_Write(0);
+ 180              		.loc 1 71 0
+ 181 0008 0120     		movs	r0, #1
+ 182 000a FFF7FEFF 		bl	ant1_Write
+ 183              	.LVL20:
+  72:main.c        ****     ant3_Write(0);
+ 184              		.loc 1 72 0
+ 185 000e 0020     		movs	r0, #0
+ 186 0010 FFF7FEFF 		bl	ant2_Write
+ 187              	.LVL21:
+  73:main.c        ****     
+ 188              		.loc 1 73 0
+ 189 0014 0020     		movs	r0, #0
+ 190 0016 FFF7FEFF 		bl	ant3_Write
+ 191              	.LVL22:
+  78:main.c        ****     I2C_I2CSlaveInitWriteBuf(i2cWriteBuffer, BUFFER_SIZE);
+ 192              		.loc 1 78 0
+ 193 001a 4021     		movs	r1, #64
+ 194 001c 0748     		ldr	r0, .L11
+ 195 001e FFF7FEFF 		bl	I2C_I2CSlaveInitReadBuf
+ 196              	.LVL23:
+  79:main.c        ****     I2C_Start();
+ 197              		.loc 1 79 0
+ 198 0022 4021     		movs	r1, #64
+ 199 0024 0648     		ldr	r0, .L11+4
+ 200 0026 FFF7FEFF 		bl	I2C_I2CSlaveInitWriteBuf
+ 201              	.LVL24:
+  80:main.c        **** 
+ 202              		.loc 1 80 0
+ 203 002a FFF7FEFF 		bl	I2C_Start
+ 204              	.LVL25:
+ 205              	.L10:
+  86:main.c        ****        /* Poll every 1ms */
+ 206              		.loc 1 86 0 discriminator 1
+ 207 002e FFF7FEFF 		bl	pollI2CwriteBuffer
+ 208              	.LVL26:
+  88:main.c        ****     }
+ 209              		.loc 1 88 0 discriminator 1
+ 210 0032 0120     		movs	r0, #1
+ 211 0034 FFF7FEFF 		bl	CyDelay
+ 212              	.LVL27:
+ 213 0038 F9E7     		b	.L10
+ 214              	.L12:
+ 215 003a C046     		.align	2
+ 216              	.L11:
+ 217 003c 00000000 		.word	.LANCHOR0
+ 218 0040 00000000 		.word	i2cWriteBuffer
+ARM GAS  C:\Users\DADSPC~1\AppData\Local\Temp\ccNXNUFC.s 			page 8
+
+
+ 219              		.cfi_endproc
+ 220              	.LFE33:
+ 221              		.size	main, .-main
+ 222              		.comm	i2cWriteBuffer,5,4
+ 223              		.global	i2cReadBuffer
+ 224              		.data
+ 225              		.align	2
+ 226              		.set	.LANCHOR0,. + 0
+ 227              		.type	i2cReadBuffer, %object
+ 228              		.size	i2cReadBuffer, 3
+ 229              	i2cReadBuffer:
+ 230 0000 01       		.byte	1
+ 231 0001 FF       		.byte	-1
+ 232 0002 17       		.byte	23
+ 233              		.text
+ 234              	.Letext0:
+ 235              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 236              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 237              		.file 4 "Generated_Source\\PSoC4/I2C_I2C.h"
+ 238              		.file 5 "Generated_Source\\PSoC4/SPI_SPI_UART.h"
+ 239              		.file 6 "Generated_Source\\PSoC4/ant1.h"
+ 240              		.file 7 "Generated_Source\\PSoC4/ant2.h"
+ 241              		.file 8 "Generated_Source\\PSoC4/ant3.h"
+ 242              		.file 9 "Generated_Source\\PSoC4/SPI.h"
+ 243              		.file 10 "Generated_Source\\PSoC4/I2C.h"
+ 244              		.file 11 "Generated_Source\\PSoC4/CyLib.h"
+ 245              		.section	.debug_info,"",%progbits
+ 246              	.Ldebug_info0:
+ 247 0000 6C030000 		.4byte	0x36c
+ 248 0004 0400     		.2byte	0x4
+ 249 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 250 000a 04       		.byte	0x4
+ 251 000b 01       		.uleb128 0x1
+ 252 000c 50020000 		.4byte	.LASF34
+ 253 0010 0C       		.byte	0xc
+ 254 0011 02020000 		.4byte	.LASF35
+ 255 0015 37000000 		.4byte	.LASF36
+ 256 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 257 001d 00000000 		.4byte	0
+ 258 0021 00000000 		.4byte	.Ldebug_line0
+ 259 0025 02       		.uleb128 0x2
+ 260 0026 01       		.byte	0x1
+ 261 0027 06       		.byte	0x6
+ 262 0028 E2020000 		.4byte	.LASF0
+ 263 002c 03       		.uleb128 0x3
+ 264 002d 1D000000 		.4byte	.LASF9
+ 265 0031 02       		.byte	0x2
+ 266 0032 1D       		.byte	0x1d
+ 267 0033 37000000 		.4byte	0x37
+ 268 0037 02       		.uleb128 0x2
+ 269 0038 01       		.byte	0x1
+ 270 0039 08       		.byte	0x8
+ 271 003a E3000000 		.4byte	.LASF1
+ 272 003e 02       		.uleb128 0x2
+ 273 003f 02       		.byte	0x2
+ 274 0040 05       		.byte	0x5
+ 275 0041 26020000 		.4byte	.LASF2
+ARM GAS  C:\Users\DADSPC~1\AppData\Local\Temp\ccNXNUFC.s 			page 9
+
+
+ 276 0045 02       		.uleb128 0x2
+ 277 0046 02       		.byte	0x2
+ 278 0047 07       		.byte	0x7
+ 279 0048 25010000 		.4byte	.LASF3
+ 280 004c 02       		.uleb128 0x2
+ 281 004d 04       		.byte	0x4
+ 282 004e 05       		.byte	0x5
+ 283 004f 30020000 		.4byte	.LASF4
+ 284 0053 02       		.uleb128 0x2
+ 285 0054 04       		.byte	0x4
+ 286 0055 07       		.byte	0x7
+ 287 0056 13010000 		.4byte	.LASF5
+ 288 005a 02       		.uleb128 0x2
+ 289 005b 08       		.byte	0x8
+ 290 005c 05       		.byte	0x5
+ 291 005d F4010000 		.4byte	.LASF6
+ 292 0061 02       		.uleb128 0x2
+ 293 0062 08       		.byte	0x8
+ 294 0063 07       		.byte	0x7
+ 295 0064 9A010000 		.4byte	.LASF7
+ 296 0068 04       		.uleb128 0x4
+ 297 0069 04       		.byte	0x4
+ 298 006a 05       		.byte	0x5
+ 299 006b 696E7400 		.ascii	"int\000"
+ 300 006f 02       		.uleb128 0x2
+ 301 0070 04       		.byte	0x4
+ 302 0071 07       		.byte	0x7
+ 303 0072 8D010000 		.4byte	.LASF8
+ 304 0076 03       		.uleb128 0x3
+ 305 0077 B1010000 		.4byte	.LASF10
+ 306 007b 03       		.byte	0x3
+ 307 007c 18       		.byte	0x18
+ 308 007d 2C000000 		.4byte	0x2c
+ 309 0081 02       		.uleb128 0x2
+ 310 0082 04       		.byte	0x4
+ 311 0083 04       		.byte	0x4
+ 312 0084 DD000000 		.4byte	.LASF11
+ 313 0088 02       		.uleb128 0x2
+ 314 0089 08       		.byte	0x8
+ 315 008a 04       		.byte	0x4
+ 316 008b 54010000 		.4byte	.LASF12
+ 317 008f 02       		.uleb128 0x2
+ 318 0090 01       		.byte	0x1
+ 319 0091 08       		.byte	0x8
+ 320 0092 09020000 		.4byte	.LASF13
+ 321 0096 02       		.uleb128 0x2
+ 322 0097 08       		.byte	0x8
+ 323 0098 04       		.byte	0x4
+ 324 0099 44020000 		.4byte	.LASF14
+ 325 009d 02       		.uleb128 0x2
+ 326 009e 04       		.byte	0x4
+ 327 009f 07       		.byte	0x7
+ 328 00a0 EB010000 		.4byte	.LASF15
+ 329 00a4 05       		.uleb128 0x5
+ 330 00a5 7A010000 		.4byte	.LASF37
+ 331 00a9 01       		.byte	0x1
+ 332 00aa 6D       		.byte	0x6d
+ARM GAS  C:\Users\DADSPC~1\AppData\Local\Temp\ccNXNUFC.s 			page 10
+
+
+ 333 00ab 00000000 		.4byte	.LFB34
+ 334 00af A0000000 		.4byte	.LFE34-.LFB34
+ 335 00b3 01       		.uleb128 0x1
+ 336 00b4 9C       		.byte	0x9c
+ 337 00b5 BC010000 		.4byte	0x1bc
+ 338 00b9 06       		.uleb128 0x6
+ 339 00ba 27000000 		.4byte	.LASF38
+ 340 00be 01       		.byte	0x1
+ 341 00bf 6F       		.byte	0x6f
+ 342 00c0 68000000 		.4byte	0x68
+ 343 00c4 00000000 		.4byte	.LLST0
+ 344 00c8 07       		.uleb128 0x7
+ 345 00c9 06000000 		.4byte	.LVL0
+ 346 00cd B5020000 		.4byte	0x2b5
+ 347 00d1 07       		.uleb128 0x7
+ 348 00d2 0E000000 		.4byte	.LVL1
+ 349 00d6 C1020000 		.4byte	0x2c1
+ 350 00da 07       		.uleb128 0x7
+ 351 00db 2C000000 		.4byte	.LVL2
+ 352 00df CD020000 		.4byte	0x2cd
+ 353 00e3 08       		.uleb128 0x8
+ 354 00e4 36000000 		.4byte	.LVL3
+ 355 00e8 D9020000 		.4byte	0x2d9
+ 356 00ec F6000000 		.4byte	0xf6
+ 357 00f0 09       		.uleb128 0x9
+ 358 00f1 01       		.uleb128 0x1
+ 359 00f2 51       		.byte	0x51
+ 360 00f3 01       		.uleb128 0x1
+ 361 00f4 32       		.byte	0x32
+ 362 00f5 00       		.byte	0
+ 363 00f6 08       		.uleb128 0x8
+ 364 00f7 4E000000 		.4byte	.LVL6
+ 365 00fb E5020000 		.4byte	0x2e5
+ 366 00ff 09010000 		.4byte	0x109
+ 367 0103 09       		.uleb128 0x9
+ 368 0104 01       		.uleb128 0x1
+ 369 0105 50       		.byte	0x50
+ 370 0106 01       		.uleb128 0x1
+ 371 0107 30       		.byte	0x30
+ 372 0108 00       		.byte	0
+ 373 0109 08       		.uleb128 0x8
+ 374 010a 54000000 		.4byte	.LVL7
+ 375 010e F0020000 		.4byte	0x2f0
+ 376 0112 1C010000 		.4byte	0x11c
+ 377 0116 09       		.uleb128 0x9
+ 378 0117 01       		.uleb128 0x1
+ 379 0118 50       		.byte	0x50
+ 380 0119 01       		.uleb128 0x1
+ 381 011a 31       		.byte	0x31
+ 382 011b 00       		.byte	0
+ 383 011c 08       		.uleb128 0x8
+ 384 011d 5A000000 		.4byte	.LVL8
+ 385 0121 FB020000 		.4byte	0x2fb
+ 386 0125 2F010000 		.4byte	0x12f
+ 387 0129 09       		.uleb128 0x9
+ 388 012a 01       		.uleb128 0x1
+ 389 012b 50       		.byte	0x50
+ARM GAS  C:\Users\DADSPC~1\AppData\Local\Temp\ccNXNUFC.s 			page 11
+
+
+ 390 012c 01       		.uleb128 0x1
+ 391 012d 30       		.byte	0x30
+ 392 012e 00       		.byte	0
+ 393 012f 08       		.uleb128 0x8
+ 394 0130 64000000 		.4byte	.LVL9
+ 395 0134 E5020000 		.4byte	0x2e5
+ 396 0138 42010000 		.4byte	0x142
+ 397 013c 09       		.uleb128 0x9
+ 398 013d 01       		.uleb128 0x1
+ 399 013e 50       		.byte	0x50
+ 400 013f 01       		.uleb128 0x1
+ 401 0140 30       		.byte	0x30
+ 402 0141 00       		.byte	0
+ 403 0142 08       		.uleb128 0x8
+ 404 0143 6A000000 		.4byte	.LVL10
+ 405 0147 F0020000 		.4byte	0x2f0
+ 406 014b 55010000 		.4byte	0x155
+ 407 014f 09       		.uleb128 0x9
+ 408 0150 01       		.uleb128 0x1
+ 409 0151 50       		.byte	0x50
+ 410 0152 01       		.uleb128 0x1
+ 411 0153 30       		.byte	0x30
+ 412 0154 00       		.byte	0
+ 413 0155 08       		.uleb128 0x8
+ 414 0156 70000000 		.4byte	.LVL11
+ 415 015a FB020000 		.4byte	0x2fb
+ 416 015e 68010000 		.4byte	0x168
+ 417 0162 09       		.uleb128 0x9
+ 418 0163 01       		.uleb128 0x1
+ 419 0164 50       		.byte	0x50
+ 420 0165 01       		.uleb128 0x1
+ 421 0166 31       		.byte	0x31
+ 422 0167 00       		.byte	0
+ 423 0168 08       		.uleb128 0x8
+ 424 0169 76000000 		.4byte	.LVL12
+ 425 016d CD020000 		.4byte	0x2cd
+ 426 0171 7B010000 		.4byte	0x17b
+ 427 0175 09       		.uleb128 0x9
+ 428 0176 01       		.uleb128 0x1
+ 429 0177 50       		.byte	0x50
+ 430 0178 01       		.uleb128 0x1
+ 431 0179 30       		.byte	0x30
+ 432 017a 00       		.byte	0
+ 433 017b 08       		.uleb128 0x8
+ 434 017c 80000000 		.4byte	.LVL13
+ 435 0180 D9020000 		.4byte	0x2d9
+ 436 0184 8E010000 		.4byte	0x18e
+ 437 0188 09       		.uleb128 0x9
+ 438 0189 01       		.uleb128 0x1
+ 439 018a 51       		.byte	0x51
+ 440 018b 01       		.uleb128 0x1
+ 441 018c 32       		.byte	0x32
+ 442 018d 00       		.byte	0
+ 443 018e 07       		.uleb128 0x7
+ 444 018f 84000000 		.4byte	.LVL14
+ 445 0193 06030000 		.4byte	0x306
+ 446 0197 07       		.uleb128 0x7
+ARM GAS  C:\Users\DADSPC~1\AppData\Local\Temp\ccNXNUFC.s 			page 12
+
+
+ 447 0198 88000000 		.4byte	.LVL15
+ 448 019c 12030000 		.4byte	0x312
+ 449 01a0 07       		.uleb128 0x7
+ 450 01a1 8C000000 		.4byte	.LVL16
+ 451 01a5 B5020000 		.4byte	0x2b5
+ 452 01a9 07       		.uleb128 0x7
+ 453 01aa 94000000 		.4byte	.LVL17
+ 454 01ae 1E030000 		.4byte	0x31e
+ 455 01b2 07       		.uleb128 0x7
+ 456 01b3 98000000 		.4byte	.LVL18
+ 457 01b7 2A030000 		.4byte	0x32a
+ 458 01bb 00       		.byte	0
+ 459 01bc 0A       		.uleb128 0xa
+ 460 01bd 5B010000 		.4byte	.LASF39
+ 461 01c1 01       		.byte	0x1
+ 462 01c2 3F       		.byte	0x3f
+ 463 01c3 68000000 		.4byte	0x68
+ 464 01c7 00000000 		.4byte	.LFB33
+ 465 01cb 44000000 		.4byte	.LFE33-.LFB33
+ 466 01cf 01       		.uleb128 0x1
+ 467 01d0 9C       		.byte	0x9c
+ 468 01d1 73020000 		.4byte	0x273
+ 469 01d5 07       		.uleb128 0x7
+ 470 01d6 08000000 		.4byte	.LVL19
+ 471 01da 36030000 		.4byte	0x336
+ 472 01de 08       		.uleb128 0x8
+ 473 01df 0E000000 		.4byte	.LVL20
+ 474 01e3 E5020000 		.4byte	0x2e5
+ 475 01e7 F1010000 		.4byte	0x1f1
+ 476 01eb 09       		.uleb128 0x9
+ 477 01ec 01       		.uleb128 0x1
+ 478 01ed 50       		.byte	0x50
+ 479 01ee 01       		.uleb128 0x1
+ 480 01ef 31       		.byte	0x31
+ 481 01f0 00       		.byte	0
+ 482 01f1 08       		.uleb128 0x8
+ 483 01f2 14000000 		.4byte	.LVL21
+ 484 01f6 F0020000 		.4byte	0x2f0
+ 485 01fa 04020000 		.4byte	0x204
+ 486 01fe 09       		.uleb128 0x9
+ 487 01ff 01       		.uleb128 0x1
+ 488 0200 50       		.byte	0x50
+ 489 0201 01       		.uleb128 0x1
+ 490 0202 30       		.byte	0x30
+ 491 0203 00       		.byte	0
+ 492 0204 08       		.uleb128 0x8
+ 493 0205 1A000000 		.4byte	.LVL22
+ 494 0209 FB020000 		.4byte	0x2fb
+ 495 020d 17020000 		.4byte	0x217
+ 496 0211 09       		.uleb128 0x9
+ 497 0212 01       		.uleb128 0x1
+ 498 0213 50       		.byte	0x50
+ 499 0214 01       		.uleb128 0x1
+ 500 0215 30       		.byte	0x30
+ 501 0216 00       		.byte	0
+ 502 0217 08       		.uleb128 0x8
+ 503 0218 22000000 		.4byte	.LVL23
+ARM GAS  C:\Users\DADSPC~1\AppData\Local\Temp\ccNXNUFC.s 			page 13
+
+
+ 504 021c 41030000 		.4byte	0x341
+ 505 0220 34020000 		.4byte	0x234
+ 506 0224 09       		.uleb128 0x9
+ 507 0225 01       		.uleb128 0x1
+ 508 0226 50       		.byte	0x50
+ 509 0227 05       		.uleb128 0x5
+ 510 0228 03       		.byte	0x3
+ 511 0229 00000000 		.4byte	.LANCHOR0
+ 512 022d 09       		.uleb128 0x9
+ 513 022e 01       		.uleb128 0x1
+ 514 022f 51       		.byte	0x51
+ 515 0230 02       		.uleb128 0x2
+ 516 0231 08       		.byte	0x8
+ 517 0232 40       		.byte	0x40
+ 518 0233 00       		.byte	0
+ 519 0234 08       		.uleb128 0x8
+ 520 0235 2A000000 		.4byte	.LVL24
+ 521 0239 4D030000 		.4byte	0x34d
+ 522 023d 51020000 		.4byte	0x251
+ 523 0241 09       		.uleb128 0x9
+ 524 0242 01       		.uleb128 0x1
+ 525 0243 50       		.byte	0x50
+ 526 0244 05       		.uleb128 0x5
+ 527 0245 03       		.byte	0x3
+ 528 0246 00000000 		.4byte	i2cWriteBuffer
+ 529 024a 09       		.uleb128 0x9
+ 530 024b 01       		.uleb128 0x1
+ 531 024c 51       		.byte	0x51
+ 532 024d 02       		.uleb128 0x2
+ 533 024e 08       		.byte	0x8
+ 534 024f 40       		.byte	0x40
+ 535 0250 00       		.byte	0
+ 536 0251 07       		.uleb128 0x7
+ 537 0252 2E000000 		.4byte	.LVL25
+ 538 0256 59030000 		.4byte	0x359
+ 539 025a 07       		.uleb128 0x7
+ 540 025b 32000000 		.4byte	.LVL26
+ 541 025f A4000000 		.4byte	0xa4
+ 542 0263 0B       		.uleb128 0xb
+ 543 0264 38000000 		.4byte	.LVL27
+ 544 0268 64030000 		.4byte	0x364
+ 545 026c 09       		.uleb128 0x9
+ 546 026d 01       		.uleb128 0x1
+ 547 026e 50       		.byte	0x50
+ 548 026f 01       		.uleb128 0x1
+ 549 0270 31       		.byte	0x31
+ 550 0271 00       		.byte	0
+ 551 0272 00       		.byte	0
+ 552 0273 0C       		.uleb128 0xc
+ 553 0274 76000000 		.4byte	0x76
+ 554 0278 83020000 		.4byte	0x283
+ 555 027c 0D       		.uleb128 0xd
+ 556 027d 9D000000 		.4byte	0x9d
+ 557 0281 02       		.byte	0x2
+ 558 0282 00       		.byte	0
+ 559 0283 0E       		.uleb128 0xe
+ 560 0284 F1000000 		.4byte	.LASF16
+ARM GAS  C:\Users\DADSPC~1\AppData\Local\Temp\ccNXNUFC.s 			page 14
+
+
+ 561 0288 01       		.byte	0x1
+ 562 0289 35       		.byte	0x35
+ 563 028a 73020000 		.4byte	0x273
+ 564 028e 05       		.uleb128 0x5
+ 565 028f 03       		.byte	0x3
+ 566 0290 00000000 		.4byte	i2cReadBuffer
+ 567 0294 0C       		.uleb128 0xc
+ 568 0295 76000000 		.4byte	0x76
+ 569 0299 A4020000 		.4byte	0x2a4
+ 570 029d 0D       		.uleb128 0xd
+ 571 029e 9D000000 		.4byte	0x9d
+ 572 02a2 04       		.byte	0x4
+ 573 02a3 00       		.byte	0
+ 574 02a4 0E       		.uleb128 0xe
+ 575 02a5 F8020000 		.4byte	.LASF17
+ 576 02a9 01       		.byte	0x1
+ 577 02aa 36       		.byte	0x36
+ 578 02ab 94020000 		.4byte	0x294
+ 579 02af 05       		.uleb128 0x5
+ 580 02b0 03       		.byte	0x3
+ 581 02b1 00000000 		.4byte	i2cWriteBuffer
+ 582 02b5 0F       		.uleb128 0xf
+ 583 02b6 AE000000 		.4byte	.LASF18
+ 584 02ba AE000000 		.4byte	.LASF18
+ 585 02be 04       		.byte	0x4
+ 586 02bf 2501     		.2byte	0x125
+ 587 02c1 0F       		.uleb128 0xf
+ 588 02c2 C1000000 		.4byte	.LASF19
+ 589 02c6 C1000000 		.4byte	.LASF19
+ 590 02ca 04       		.byte	0x4
+ 591 02cb 3101     		.2byte	0x131
+ 592 02cd 0F       		.uleb128 0xf
+ 593 02ce 88000000 		.4byte	.LASF20
+ 594 02d2 88000000 		.4byte	.LASF20
+ 595 02d6 05       		.byte	0x5
+ 596 02d7 F602     		.2byte	0x2f6
+ 597 02d9 0F       		.uleb128 0xf
+ 598 02da FF000000 		.4byte	.LASF21
+ 599 02de FF000000 		.4byte	.LASF21
+ 600 02e2 05       		.byte	0x5
+ 601 02e3 4503     		.2byte	0x345
+ 602 02e5 10       		.uleb128 0x10
+ 603 02e6 39020000 		.4byte	.LASF22
+ 604 02ea 39020000 		.4byte	.LASF22
+ 605 02ee 06       		.byte	0x6
+ 606 02ef 33       		.byte	0x33
+ 607 02f0 10       		.uleb128 0x10
+ 608 02f1 0F030000 		.4byte	.LASF23
+ 609 02f5 0F030000 		.4byte	.LASF23
+ 610 02f9 07       		.byte	0x7
+ 611 02fa 33       		.byte	0x33
+ 612 02fb 10       		.uleb128 0x10
+ 613 02fc 2C000000 		.4byte	.LASF24
+ 614 0300 2C000000 		.4byte	.LASF24
+ 615 0304 08       		.byte	0x8
+ 616 0305 33       		.byte	0x33
+ 617 0306 0F       		.uleb128 0xf
+ARM GAS  C:\Users\DADSPC~1\AppData\Local\Temp\ccNXNUFC.s 			page 15
+
+
+ 618 0307 60010000 		.4byte	.LASF25
+ 619 030b 60010000 		.4byte	.LASF25
+ 620 030f 04       		.byte	0x4
+ 621 0310 3301     		.2byte	0x133
+ 622 0312 0F       		.uleb128 0xf
+ 623 0313 00000000 		.4byte	.LASF26
+ 624 0317 00000000 		.4byte	.LASF26
+ 625 031b 04       		.byte	0x4
+ 626 031c 2701     		.2byte	0x127
+ 627 031e 0F       		.uleb128 0xf
+ 628 031f B9010000 		.4byte	.LASF27
+ 629 0323 B9010000 		.4byte	.LASF27
+ 630 0327 04       		.byte	0x4
+ 631 0328 3201     		.2byte	0x132
+ 632 032a 0F       		.uleb128 0xf
+ 633 032b 38010000 		.4byte	.LASF28
+ 634 032f 38010000 		.4byte	.LASF28
+ 635 0333 04       		.byte	0x4
+ 636 0334 2601     		.2byte	0x126
+ 637 0336 10       		.uleb128 0x10
+ 638 0337 EE020000 		.4byte	.LASF29
+ 639 033b EE020000 		.4byte	.LASF29
+ 640 033f 09       		.byte	0x9
+ 641 0340 72       		.byte	0x72
+ 642 0341 0F       		.uleb128 0xf
+ 643 0342 0E020000 		.4byte	.LASF30
+ 644 0346 0E020000 		.4byte	.LASF30
+ 645 034a 04       		.byte	0x4
+ 646 034b 2E01     		.2byte	0x12e
+ 647 034d 0F       		.uleb128 0xf
+ 648 034e D2010000 		.4byte	.LASF31
+ 649 0352 D2010000 		.4byte	.LASF31
+ 650 0356 04       		.byte	0x4
+ 651 0357 2F01     		.2byte	0x12f
+ 652 0359 10       		.uleb128 0x10
+ 653 035a A4000000 		.4byte	.LASF32
+ 654 035e A4000000 		.4byte	.LASF32
+ 655 0362 0A       		.byte	0xa
+ 656 0363 72       		.byte	0x72
+ 657 0364 10       		.uleb128 0x10
+ 658 0365 07030000 		.4byte	.LASF33
+ 659 0369 07030000 		.4byte	.LASF33
+ 660 036d 0B       		.byte	0xb
+ 661 036e EC       		.byte	0xec
+ 662 036f 00       		.byte	0
+ 663              		.section	.debug_abbrev,"",%progbits
+ 664              	.Ldebug_abbrev0:
+ 665 0000 01       		.uleb128 0x1
+ 666 0001 11       		.uleb128 0x11
+ 667 0002 01       		.byte	0x1
+ 668 0003 25       		.uleb128 0x25
+ 669 0004 0E       		.uleb128 0xe
+ 670 0005 13       		.uleb128 0x13
+ 671 0006 0B       		.uleb128 0xb
+ 672 0007 03       		.uleb128 0x3
+ 673 0008 0E       		.uleb128 0xe
+ 674 0009 1B       		.uleb128 0x1b
+ARM GAS  C:\Users\DADSPC~1\AppData\Local\Temp\ccNXNUFC.s 			page 16
+
+
+ 675 000a 0E       		.uleb128 0xe
+ 676 000b 55       		.uleb128 0x55
+ 677 000c 17       		.uleb128 0x17
+ 678 000d 11       		.uleb128 0x11
+ 679 000e 01       		.uleb128 0x1
+ 680 000f 10       		.uleb128 0x10
+ 681 0010 17       		.uleb128 0x17
+ 682 0011 00       		.byte	0
+ 683 0012 00       		.byte	0
+ 684 0013 02       		.uleb128 0x2
+ 685 0014 24       		.uleb128 0x24
+ 686 0015 00       		.byte	0
+ 687 0016 0B       		.uleb128 0xb
+ 688 0017 0B       		.uleb128 0xb
+ 689 0018 3E       		.uleb128 0x3e
+ 690 0019 0B       		.uleb128 0xb
+ 691 001a 03       		.uleb128 0x3
+ 692 001b 0E       		.uleb128 0xe
+ 693 001c 00       		.byte	0
+ 694 001d 00       		.byte	0
+ 695 001e 03       		.uleb128 0x3
+ 696 001f 16       		.uleb128 0x16
+ 697 0020 00       		.byte	0
+ 698 0021 03       		.uleb128 0x3
+ 699 0022 0E       		.uleb128 0xe
+ 700 0023 3A       		.uleb128 0x3a
+ 701 0024 0B       		.uleb128 0xb
+ 702 0025 3B       		.uleb128 0x3b
+ 703 0026 0B       		.uleb128 0xb
+ 704 0027 49       		.uleb128 0x49
+ 705 0028 13       		.uleb128 0x13
+ 706 0029 00       		.byte	0
+ 707 002a 00       		.byte	0
+ 708 002b 04       		.uleb128 0x4
+ 709 002c 24       		.uleb128 0x24
+ 710 002d 00       		.byte	0
+ 711 002e 0B       		.uleb128 0xb
+ 712 002f 0B       		.uleb128 0xb
+ 713 0030 3E       		.uleb128 0x3e
+ 714 0031 0B       		.uleb128 0xb
+ 715 0032 03       		.uleb128 0x3
+ 716 0033 08       		.uleb128 0x8
+ 717 0034 00       		.byte	0
+ 718 0035 00       		.byte	0
+ 719 0036 05       		.uleb128 0x5
+ 720 0037 2E       		.uleb128 0x2e
+ 721 0038 01       		.byte	0x1
+ 722 0039 03       		.uleb128 0x3
+ 723 003a 0E       		.uleb128 0xe
+ 724 003b 3A       		.uleb128 0x3a
+ 725 003c 0B       		.uleb128 0xb
+ 726 003d 3B       		.uleb128 0x3b
+ 727 003e 0B       		.uleb128 0xb
+ 728 003f 27       		.uleb128 0x27
+ 729 0040 19       		.uleb128 0x19
+ 730 0041 11       		.uleb128 0x11
+ 731 0042 01       		.uleb128 0x1
+ARM GAS  C:\Users\DADSPC~1\AppData\Local\Temp\ccNXNUFC.s 			page 17
+
+
+ 732 0043 12       		.uleb128 0x12
+ 733 0044 06       		.uleb128 0x6
+ 734 0045 40       		.uleb128 0x40
+ 735 0046 18       		.uleb128 0x18
+ 736 0047 9742     		.uleb128 0x2117
+ 737 0049 19       		.uleb128 0x19
+ 738 004a 01       		.uleb128 0x1
+ 739 004b 13       		.uleb128 0x13
+ 740 004c 00       		.byte	0
+ 741 004d 00       		.byte	0
+ 742 004e 06       		.uleb128 0x6
+ 743 004f 34       		.uleb128 0x34
+ 744 0050 00       		.byte	0
+ 745 0051 03       		.uleb128 0x3
+ 746 0052 0E       		.uleb128 0xe
+ 747 0053 3A       		.uleb128 0x3a
+ 748 0054 0B       		.uleb128 0xb
+ 749 0055 3B       		.uleb128 0x3b
+ 750 0056 0B       		.uleb128 0xb
+ 751 0057 49       		.uleb128 0x49
+ 752 0058 13       		.uleb128 0x13
+ 753 0059 02       		.uleb128 0x2
+ 754 005a 17       		.uleb128 0x17
+ 755 005b 00       		.byte	0
+ 756 005c 00       		.byte	0
+ 757 005d 07       		.uleb128 0x7
+ 758 005e 898201   		.uleb128 0x4109
+ 759 0061 00       		.byte	0
+ 760 0062 11       		.uleb128 0x11
+ 761 0063 01       		.uleb128 0x1
+ 762 0064 31       		.uleb128 0x31
+ 763 0065 13       		.uleb128 0x13
+ 764 0066 00       		.byte	0
+ 765 0067 00       		.byte	0
+ 766 0068 08       		.uleb128 0x8
+ 767 0069 898201   		.uleb128 0x4109
+ 768 006c 01       		.byte	0x1
+ 769 006d 11       		.uleb128 0x11
+ 770 006e 01       		.uleb128 0x1
+ 771 006f 31       		.uleb128 0x31
+ 772 0070 13       		.uleb128 0x13
+ 773 0071 01       		.uleb128 0x1
+ 774 0072 13       		.uleb128 0x13
+ 775 0073 00       		.byte	0
+ 776 0074 00       		.byte	0
+ 777 0075 09       		.uleb128 0x9
+ 778 0076 8A8201   		.uleb128 0x410a
+ 779 0079 00       		.byte	0
+ 780 007a 02       		.uleb128 0x2
+ 781 007b 18       		.uleb128 0x18
+ 782 007c 9142     		.uleb128 0x2111
+ 783 007e 18       		.uleb128 0x18
+ 784 007f 00       		.byte	0
+ 785 0080 00       		.byte	0
+ 786 0081 0A       		.uleb128 0xa
+ 787 0082 2E       		.uleb128 0x2e
+ 788 0083 01       		.byte	0x1
+ARM GAS  C:\Users\DADSPC~1\AppData\Local\Temp\ccNXNUFC.s 			page 18
+
+
+ 789 0084 3F       		.uleb128 0x3f
+ 790 0085 19       		.uleb128 0x19
+ 791 0086 03       		.uleb128 0x3
+ 792 0087 0E       		.uleb128 0xe
+ 793 0088 3A       		.uleb128 0x3a
+ 794 0089 0B       		.uleb128 0xb
+ 795 008a 3B       		.uleb128 0x3b
+ 796 008b 0B       		.uleb128 0xb
+ 797 008c 27       		.uleb128 0x27
+ 798 008d 19       		.uleb128 0x19
+ 799 008e 49       		.uleb128 0x49
+ 800 008f 13       		.uleb128 0x13
+ 801 0090 8701     		.uleb128 0x87
+ 802 0092 19       		.uleb128 0x19
+ 803 0093 11       		.uleb128 0x11
+ 804 0094 01       		.uleb128 0x1
+ 805 0095 12       		.uleb128 0x12
+ 806 0096 06       		.uleb128 0x6
+ 807 0097 40       		.uleb128 0x40
+ 808 0098 18       		.uleb128 0x18
+ 809 0099 9742     		.uleb128 0x2117
+ 810 009b 19       		.uleb128 0x19
+ 811 009c 01       		.uleb128 0x1
+ 812 009d 13       		.uleb128 0x13
+ 813 009e 00       		.byte	0
+ 814 009f 00       		.byte	0
+ 815 00a0 0B       		.uleb128 0xb
+ 816 00a1 898201   		.uleb128 0x4109
+ 817 00a4 01       		.byte	0x1
+ 818 00a5 11       		.uleb128 0x11
+ 819 00a6 01       		.uleb128 0x1
+ 820 00a7 31       		.uleb128 0x31
+ 821 00a8 13       		.uleb128 0x13
+ 822 00a9 00       		.byte	0
+ 823 00aa 00       		.byte	0
+ 824 00ab 0C       		.uleb128 0xc
+ 825 00ac 01       		.uleb128 0x1
+ 826 00ad 01       		.byte	0x1
+ 827 00ae 49       		.uleb128 0x49
+ 828 00af 13       		.uleb128 0x13
+ 829 00b0 01       		.uleb128 0x1
+ 830 00b1 13       		.uleb128 0x13
+ 831 00b2 00       		.byte	0
+ 832 00b3 00       		.byte	0
+ 833 00b4 0D       		.uleb128 0xd
+ 834 00b5 21       		.uleb128 0x21
+ 835 00b6 00       		.byte	0
+ 836 00b7 49       		.uleb128 0x49
+ 837 00b8 13       		.uleb128 0x13
+ 838 00b9 2F       		.uleb128 0x2f
+ 839 00ba 0B       		.uleb128 0xb
+ 840 00bb 00       		.byte	0
+ 841 00bc 00       		.byte	0
+ 842 00bd 0E       		.uleb128 0xe
+ 843 00be 34       		.uleb128 0x34
+ 844 00bf 00       		.byte	0
+ 845 00c0 03       		.uleb128 0x3
+ARM GAS  C:\Users\DADSPC~1\AppData\Local\Temp\ccNXNUFC.s 			page 19
+
+
+ 846 00c1 0E       		.uleb128 0xe
+ 847 00c2 3A       		.uleb128 0x3a
+ 848 00c3 0B       		.uleb128 0xb
+ 849 00c4 3B       		.uleb128 0x3b
+ 850 00c5 0B       		.uleb128 0xb
+ 851 00c6 49       		.uleb128 0x49
+ 852 00c7 13       		.uleb128 0x13
+ 853 00c8 3F       		.uleb128 0x3f
+ 854 00c9 19       		.uleb128 0x19
+ 855 00ca 02       		.uleb128 0x2
+ 856 00cb 18       		.uleb128 0x18
+ 857 00cc 00       		.byte	0
+ 858 00cd 00       		.byte	0
+ 859 00ce 0F       		.uleb128 0xf
+ 860 00cf 2E       		.uleb128 0x2e
+ 861 00d0 00       		.byte	0
+ 862 00d1 3F       		.uleb128 0x3f
+ 863 00d2 19       		.uleb128 0x19
+ 864 00d3 3C       		.uleb128 0x3c
+ 865 00d4 19       		.uleb128 0x19
+ 866 00d5 6E       		.uleb128 0x6e
+ 867 00d6 0E       		.uleb128 0xe
+ 868 00d7 03       		.uleb128 0x3
+ 869 00d8 0E       		.uleb128 0xe
+ 870 00d9 3A       		.uleb128 0x3a
+ 871 00da 0B       		.uleb128 0xb
+ 872 00db 3B       		.uleb128 0x3b
+ 873 00dc 05       		.uleb128 0x5
+ 874 00dd 00       		.byte	0
+ 875 00de 00       		.byte	0
+ 876 00df 10       		.uleb128 0x10
+ 877 00e0 2E       		.uleb128 0x2e
+ 878 00e1 00       		.byte	0
+ 879 00e2 3F       		.uleb128 0x3f
+ 880 00e3 19       		.uleb128 0x19
+ 881 00e4 3C       		.uleb128 0x3c
+ 882 00e5 19       		.uleb128 0x19
+ 883 00e6 6E       		.uleb128 0x6e
+ 884 00e7 0E       		.uleb128 0xe
+ 885 00e8 03       		.uleb128 0x3
+ 886 00e9 0E       		.uleb128 0xe
+ 887 00ea 3A       		.uleb128 0x3a
+ 888 00eb 0B       		.uleb128 0xb
+ 889 00ec 3B       		.uleb128 0x3b
+ 890 00ed 0B       		.uleb128 0xb
+ 891 00ee 00       		.byte	0
+ 892 00ef 00       		.byte	0
+ 893 00f0 00       		.byte	0
+ 894              		.section	.debug_loc,"",%progbits
+ 895              	.Ldebug_loc0:
+ 896              	.LLST0:
+ 897 0000 42000000 		.4byte	.LVL4
+ 898 0004 80000000 		.4byte	.LVL13
+ 899 0008 0100     		.2byte	0x1
+ 900 000a 54       		.byte	0x54
+ 901 000b 00000000 		.4byte	0
+ 902 000f 00000000 		.4byte	0
+ARM GAS  C:\Users\DADSPC~1\AppData\Local\Temp\ccNXNUFC.s 			page 20
+
+
+ 903              		.section	.debug_aranges,"",%progbits
+ 904 0000 24000000 		.4byte	0x24
+ 905 0004 0200     		.2byte	0x2
+ 906 0006 00000000 		.4byte	.Ldebug_info0
+ 907 000a 04       		.byte	0x4
+ 908 000b 00       		.byte	0
+ 909 000c 0000     		.2byte	0
+ 910 000e 0000     		.2byte	0
+ 911 0010 00000000 		.4byte	.LFB34
+ 912 0014 A0000000 		.4byte	.LFE34-.LFB34
+ 913 0018 00000000 		.4byte	.LFB33
+ 914 001c 44000000 		.4byte	.LFE33-.LFB33
+ 915 0020 00000000 		.4byte	0
+ 916 0024 00000000 		.4byte	0
+ 917              		.section	.debug_ranges,"",%progbits
+ 918              	.Ldebug_ranges0:
+ 919 0000 00000000 		.4byte	.LFB34
+ 920 0004 A0000000 		.4byte	.LFE34
+ 921 0008 00000000 		.4byte	.LFB33
+ 922 000c 44000000 		.4byte	.LFE33
+ 923 0010 00000000 		.4byte	0
+ 924 0014 00000000 		.4byte	0
+ 925              		.section	.debug_line,"",%progbits
+ 926              	.Ldebug_line0:
+ 927 0000 E5010000 		.section	.debug_str,"MS",%progbits,1
+ 927      02008B01 
+ 927      00000201 
+ 927      FB0E0D00 
+ 927      01010101 
+ 928              	.LASF26:
+ 929 0000 4932435F 		.ascii	"I2C_I2CSlaveClearWriteStatus\000"
+ 929      49324353 
+ 929      6C617665 
+ 929      436C6561 
+ 929      72577269 
+ 930              	.LASF9:
+ 931 001d 5F5F7569 		.ascii	"__uint8_t\000"
+ 931      6E74385F 
+ 931      7400
+ 932              	.LASF38:
+ 933 0027 776F726B 		.ascii	"work\000"
+ 933      00
+ 934              	.LASF24:
+ 935 002c 616E7433 		.ascii	"ant3_Write\000"
+ 935      5F577269 
+ 935      746500
+ 936              	.LASF36:
+ 937 0037 433A5C55 		.ascii	"C:\\Users\\Dads PC\\OneDrive\\Documents\\PSoC Creat"
+ 937      73657273 
+ 937      5C446164 
+ 937      73205043 
+ 937      5C4F6E65 
+ 938 0065 6F725C52 		.ascii	"or\\RP_i2c_to_SPI_v2\\Design01.cydsn\000"
+ 938      505F6932 
+ 938      635F746F 
+ 938      5F535049 
+ 938      5F76325C 
+ARM GAS  C:\Users\DADSPC~1\AppData\Local\Temp\ccNXNUFC.s 			page 21
+
+
+ 939              	.LASF20:
+ 940 0088 5350495F 		.ascii	"SPI_SpiSetActiveSlaveSelect\000"
+ 940      53706953 
+ 940      65744163 
+ 940      74697665 
+ 940      536C6176 
+ 941              	.LASF32:
+ 942 00a4 4932435F 		.ascii	"I2C_Start\000"
+ 942      53746172 
+ 942      7400
+ 943              	.LASF18:
+ 944 00ae 4932435F 		.ascii	"I2C_I2CSlaveStatus\000"
+ 944      49324353 
+ 944      6C617665 
+ 944      53746174 
+ 944      757300
+ 945              	.LASF19:
+ 946 00c1 4932435F 		.ascii	"I2C_I2CSlaveGetWriteBufSize\000"
+ 946      49324353 
+ 946      6C617665 
+ 946      47657457 
+ 946      72697465 
+ 947              	.LASF11:
+ 948 00dd 666C6F61 		.ascii	"float\000"
+ 948      7400
+ 949              	.LASF1:
+ 950 00e3 756E7369 		.ascii	"unsigned char\000"
+ 950      676E6564 
+ 950      20636861 
+ 950      7200
+ 951              	.LASF16:
+ 952 00f1 69326352 		.ascii	"i2cReadBuffer\000"
+ 952      65616442 
+ 952      75666665 
+ 952      7200
+ 953              	.LASF21:
+ 954 00ff 5350495F 		.ascii	"SPI_SpiUartPutArray\000"
+ 954      53706955 
+ 954      61727450 
+ 954      75744172 
+ 954      72617900 
+ 955              	.LASF5:
+ 956 0113 6C6F6E67 		.ascii	"long unsigned int\000"
+ 956      20756E73 
+ 956      69676E65 
+ 956      6420696E 
+ 956      7400
+ 957              	.LASF3:
+ 958 0125 73686F72 		.ascii	"short unsigned int\000"
+ 958      7420756E 
+ 958      7369676E 
+ 958      65642069 
+ 958      6E7400
+ 959              	.LASF28:
+ 960 0138 4932435F 		.ascii	"I2C_I2CSlaveClearReadStatus\000"
+ 960      49324353 
+ 960      6C617665 
+ARM GAS  C:\Users\DADSPC~1\AppData\Local\Temp\ccNXNUFC.s 			page 22
+
+
+ 960      436C6561 
+ 960      72526561 
+ 961              	.LASF12:
+ 962 0154 646F7562 		.ascii	"double\000"
+ 962      6C6500
+ 963              	.LASF39:
+ 964 015b 6D61696E 		.ascii	"main\000"
+ 964      00
+ 965              	.LASF25:
+ 966 0160 4932435F 		.ascii	"I2C_I2CSlaveClearWriteBuf\000"
+ 966      49324353 
+ 966      6C617665 
+ 966      436C6561 
+ 966      72577269 
+ 967              	.LASF37:
+ 968 017a 706F6C6C 		.ascii	"pollI2CwriteBuffer\000"
+ 968      49324377 
+ 968      72697465 
+ 968      42756666 
+ 968      657200
+ 969              	.LASF8:
+ 970 018d 756E7369 		.ascii	"unsigned int\000"
+ 970      676E6564 
+ 970      20696E74 
+ 970      00
+ 971              	.LASF7:
+ 972 019a 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 972      206C6F6E 
+ 972      6720756E 
+ 972      7369676E 
+ 972      65642069 
+ 973              	.LASF10:
+ 974 01b1 75696E74 		.ascii	"uint8_t\000"
+ 974      385F7400 
+ 975              	.LASF27:
+ 976 01b9 4932435F 		.ascii	"I2C_I2CSlaveClearReadBuf\000"
+ 976      49324353 
+ 976      6C617665 
+ 976      436C6561 
+ 976      72526561 
+ 977              	.LASF31:
+ 978 01d2 4932435F 		.ascii	"I2C_I2CSlaveInitWriteBuf\000"
+ 978      49324353 
+ 978      6C617665 
+ 978      496E6974 
+ 978      57726974 
+ 979              	.LASF15:
+ 980 01eb 73697A65 		.ascii	"sizetype\000"
+ 980      74797065 
+ 980      00
+ 981              	.LASF6:
+ 982 01f4 6C6F6E67 		.ascii	"long long int\000"
+ 982      206C6F6E 
+ 982      6720696E 
+ 982      7400
+ 983              	.LASF35:
+ 984 0202 6D61696E 		.ascii	"main.c\000"
+ARM GAS  C:\Users\DADSPC~1\AppData\Local\Temp\ccNXNUFC.s 			page 23
+
+
+ 984      2E6300
+ 985              	.LASF13:
+ 986 0209 63686172 		.ascii	"char\000"
+ 986      00
+ 987              	.LASF30:
+ 988 020e 4932435F 		.ascii	"I2C_I2CSlaveInitReadBuf\000"
+ 988      49324353 
+ 988      6C617665 
+ 988      496E6974 
+ 988      52656164 
+ 989              	.LASF2:
+ 990 0226 73686F72 		.ascii	"short int\000"
+ 990      7420696E 
+ 990      7400
+ 991              	.LASF4:
+ 992 0230 6C6F6E67 		.ascii	"long int\000"
+ 992      20696E74 
+ 992      00
+ 993              	.LASF22:
+ 994 0239 616E7431 		.ascii	"ant1_Write\000"
+ 994      5F577269 
+ 994      746500
+ 995              	.LASF14:
+ 996 0244 6C6F6E67 		.ascii	"long double\000"
+ 996      20646F75 
+ 996      626C6500 
+ 997              	.LASF34:
+ 998 0250 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 998      43313120 
+ 998      352E342E 
+ 998      31203230 
+ 998      31363036 
+ 999 0283 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0plus -mthumb -"
+ 999      20726576 
+ 999      6973696F 
+ 999      6E203233 
+ 999      37373135 
+ 1000 02b6 67202D4F 		.ascii	"g -Og -ffunction-sections -ffat-lto-objects\000"
+ 1000      67202D66 
+ 1000      66756E63 
+ 1000      74696F6E 
+ 1000      2D736563 
+ 1001              	.LASF0:
+ 1002 02e2 7369676E 		.ascii	"signed char\000"
+ 1002      65642063 
+ 1002      68617200 
+ 1003              	.LASF29:
+ 1004 02ee 5350495F 		.ascii	"SPI_Start\000"
+ 1004      53746172 
+ 1004      7400
+ 1005              	.LASF17:
+ 1006 02f8 69326357 		.ascii	"i2cWriteBuffer\000"
+ 1006      72697465 
+ 1006      42756666 
+ 1006      657200
+ 1007              	.LASF33:
+ 1008 0307 43794465 		.ascii	"CyDelay\000"
+ARM GAS  C:\Users\DADSPC~1\AppData\Local\Temp\ccNXNUFC.s 			page 24
+
+
+ 1008      6C617900 
+ 1009              	.LASF23:
+ 1010 030f 616E7432 		.ascii	"ant2_Write\000"
+ 1010      5F577269 
+ 1010      746500
+ 1011              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

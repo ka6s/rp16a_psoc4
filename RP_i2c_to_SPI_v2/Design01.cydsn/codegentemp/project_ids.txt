@@ -1,0 +1,8 @@
+C:\Users\Dads PC\OneDrive\Documents\PSoC Creator\RP_i2c_to_SPI_v2\Design01.cydsn\Design01.cyprj|a7562ab7-e2bb-4d77-9af4-2b8c53de6366
+C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|9ff973aa-a9b0-4de2-8278-70435b897586
+C:\Users\Dads PC\OneDrive\Documents\PSoC Creator\4.4\Downloads ( 4.4).cylib\Downloads ( 4.4).cyprj|67c47103-e7d0-40e0-9075-3654aecb0239
+C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|412005d0-e401-48d5-a413-8f124e717798
+C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|f9d64285-798b-4298-ad02-52d3477b8c80
+C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|185bc82f-9e0f-41c0-96d1-b26132d8ff55
+C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\dev\psoc4\PSoC4AnalogDevice\psoc4arch.cydsn\psoc4arch.cyprj|cbea15bf-67b6-4050-a2ec-92def7ace21b
+C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\default\CyReferenceLibrary\CyReferenceLibrary.cylib\CyReferenceLibrary.cyprj|26e4e98d-1fee-4e7e-8d98-1f0f96177a73

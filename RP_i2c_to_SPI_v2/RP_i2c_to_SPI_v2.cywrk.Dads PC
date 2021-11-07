@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CyXmlSerializer>
+<!--This file is machine generated and read. It is not intended to be edited by hand.-->
+<!--Due to this, there is no schema for this file.-->
+<CyGuid_843a90a4-0c4b-4e44-991d-05e7fb117a21 type_name="CyDesigner.Common.ProjMgmt.Model.CyPrjMgmtWrkspcCustomData" version="4">
+<CyGuid_fdba8dfd-b15b-4469-9bbb-9e40c3e70997 type_name="CyDesigner.Common.Base.CyCustomData" version="2">
+<userData>
+<dataGuid v="1b906a0f-a7b6-4e4d-a428-82f98b53cb35">
+<CyGuid_1b906a0f-a7b6-4e4d-a428-82f98b53cb35 type_name="CyDesigner.Common.ProjMgmt.GUI.CyExplorerWindow+CyExplorerWindowState" version="3" SelectedTab="Source">
+<TreeKeys>
+<v>Source</v>
+<v>Components</v>
+<v>Output</v>
+</TreeKeys>
+<TreeStates>
+<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="RP_i2c_to_SPI_v2\Design01\Generated_Source\PSoC4\ant2\ant2.h">
+<ExpandedNodeIds>
+<v>RP_i2c_to_SPI_v2</v>
+<v>RP_i2c_to_SPI_v2\Design01</v>
+<v>RP_i2c_to_SPI_v2\Design01\TopDesign</v>
+<v>RP_i2c_to_SPI_v2\Design01\Design01.cydwr</v>
+<v>RP_i2c_to_SPI_v2\Design01\Design01.cydwr\Pins</v>
+<v>RP_i2c_to_SPI_v2\Design01\Design01.cydwr\Analog</v>
+<v>RP_i2c_to_SPI_v2\Design01\Design01.cydwr\Clocks</v>
+<v>RP_i2c_to_SPI_v2\Design01\Design01.cydwr\Interrupts</v>
+<v>RP_i2c_to_SPI_v2\Design01\Design01.cydwr\System</v>
+<v>RP_i2c_to_SPI_v2\Design01\Design01.cydwr\Directives</v>
+<v>RP_i2c_to_SPI_v2\Design01\Design01.cydwr\Flash Security</v>
+<v>RP_i2c_to_SPI_v2\Design01\Header Files</v>
+<v>RP_i2c_to_SPI_v2\Design01\Header Files\cyapicallbacks.h</v>
+<v>RP_i2c_to_SPI_v2\Design01\Source Files</v>
+<v>RP_i2c_to_SPI_v2\Design01\Source Files\main.c</v>
+<v>RP_i2c_to_SPI_v2\Design01\Generated_Source</v>
+<v>RP_i2c_to_SPI_v2\Design01\Generated_Source\PSoC4</v>
+<v>RP_i2c_to_SPI_v2\Design01\Generated_Source\PSoC4\ant2</v>
+<v>RP_i2c_to_SPI_v2\Design01\Generated_Source\PSoC4\SPI_ss1_m</v>
+<v>RP_i2c_to_SPI_v2\CE221120_PSoC6MCU_SPI_Master.pdf</v>
+<v>RP_i2c_to_SPI_v2\CE224339.pdf</v>
+</ExpandedNodeIds>
+<VisibleNodeIds>
+<v>RP_i2c_to_SPI_v2</v>
+<v>RP_i2c_to_SPI_v2\Design01</v>
+<v>RP_i2c_to_SPI_v2\Design01\TopDesign</v>
+<v>RP_i2c_to_SPI_v2\Design01\Design01.cydwr</v>
+<v>RP_i2c_to_SPI_v2\Design01\Design01.cydwr\Pins</v>
+<v>RP_i2c_to_SPI_v2\Design01\Design01.cydwr\Analog</v>
+<v>RP_i2c_to_SPI_v2\Design01\Design01.cydwr\Clocks</v>
+<v>RP_i2c_to_SPI_v2\Design01\Design01.cydwr\Interrupts</v>
+<v>RP_i2c_to_SPI_v2\Design01\Design01.cydwr\System</v>
+<v>RP_i2c_to_SPI_v2\Design01\Design01.cydwr\Directives</v>
+<v>RP_i2c_to_SPI_v2\Design01\Design01.cydwr\Flash Security</v>
+<v>RP_i2c_to_SPI_v2\Design01\Header Files</v>
+<v>RP_i2c_to_SPI_v2\Design01\Header Files\cyapicallbacks.h</v>
+<v>RP_i2c_to_SPI_v2\Design01\Source Files</v>
+<v>RP_i2c_to_SPI_v2\Design01\Source Files\main.c</v>
+<v>RP_i2c_to_SPI_v2\Design01\Generated_Source</v>
+<v>RP_i2c_to_SPI_v2\Design01\Generated_Source\PSoC4</v>
+<v>RP_i2c_to_SPI_v2\Design01\Generated_Source\PSoC4\ant1</v>
+<v>RP_i2c_to_SPI_v2\Design01\Generated_Source\PSoC4\ant2</v>
+<v>RP_i2c_to_SPI_v2\Design01\Generated_Source\PSoC4\ant2\ant2.c</v>
+<v>RP_i2c_to_SPI_v2\Design01\Generated_Source\PSoC4\ant2\ant2.h</v>
+<v>RP_i2c_to_SPI_v2\Design01\Generated_Source\PSoC4\ant2\ant2_aliases.h</v>
+<v>RP_i2c_to_SPI_v2\Design01\Generated_Source\PSoC4\ant2\ant2_PM.c</v>
+<v>RP_i2c_to_SPI_v2\Design01\Generated_Source\PSoC4\ant3</v>
+<v>RP_i2c_to_SPI_v2\Design01\Generated_Source\PSoC4\cy_boot</v>
+<v>RP_i2c_to_SPI_v2\Design01\Generated_Source\PSoC4\cy_dmac</v>
+<v>RP_i2c_to_SPI_v2\Design01\Generated_Source\PSoC4\cy_lfclk</v>
+<v>RP_i2c_to_SPI_v2\Design01\Generated_Source\PSoC4\Em_EEPROM_Dynamic</v>
+<v>RP_i2c_to_SPI_v2\Design01\Generated_Source\PSoC4\I2C</v>
+<v>RP_i2c_to_SPI_v2\Design01\Generated_Source\PSoC4\I2C_SCB_IRQ</v>
+<v>RP_i2c_to_SPI_v2\Design01\Generated_Source\PSoC4\I2C_SCBCLK</v>
+<v>RP_i2c_to_SPI_v2\Design01\Generated_Source\PSoC4\I2C_scl</v>
+<v>RP_i2c_to_SPI_v2\Design01\Generated_Source\PSoC4\I2C_sda</v>
+<v>RP_i2c_to_SPI_v2\Design01\Generated_Source\PSoC4\SPI</v>
+<v>RP_i2c_to_SPI_v2\Design01\Generated_Source\PSoC4\SPI_mosi_m</v>
+<v>RP_i2c_to_SPI_v2\Design01\Generated_Source\PSoC4\SPI_SCB_IRQ</v>
+<v>RP_i2c_to_SPI_v2\Design01\Generated_Source\PSoC4\SPI_SCBCLK</v>
+<v>RP_i2c_to_SPI_v2\Design01\Generated_Source\PSoC4\SPI_sclk_m</v>
+<v>RP_i2c_to_SPI_v2\Design01\Generated_Source\PSoC4\SPI_ss0_m</v>
+<v>RP_i2c_to_SPI_v2\Design01\Generated_Source\PSoC4\SPI_ss1_m</v>
+</VisibleNodeIds>
+</CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
+<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="">
+<ExpandedNodeIds>
+<v>RP_i2c_to_SPI_v2</v>
+<v>RP_i2c_to_SPI_v2\Design01</v>
+<v>RP_i2c_to_SPI_v2\Design01\TopDesign</v>
+<v>RP_i2c_to_SPI_v2\Design01\TopDesign\TopDesign.cysch</v>
+</ExpandedNodeIds>
+<VisibleNodeIds>
+<v>RP_i2c_to_SPI_v2</v>
+<v>RP_i2c_to_SPI_v2\Design01</v>
+<v>RP_i2c_to_SPI_v2\Design01\TopDesign</v>
+<v>RP_i2c_to_SPI_v2\Design01\TopDesign\TopDesign.cysch</v>
+</VisibleNodeIds>
+</CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
+<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="">
+<ExpandedNodeIds>
+<v>RP_i2c_to_SPI_v2</v>
+<v>RP_i2c_to_SPI_v2\Design01</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\ant1.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\ant1_PM.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\ant2.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\ant2_PM.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\ant3.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\ant3_PM.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\Cm0plusStart.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\cy_em_eeprom.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\CyBootAsmGnu.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\CyDMA.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\cyfitter_cfg.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\CyFlash.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\CyLFClk.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\CyLib.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\cymetadata.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\cyPm.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\cyutils.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\I2C.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\I2C_BOOT.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\I2C_I2C.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\I2C_I2C_BOOT.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\I2C_I2C_INT.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\I2C_I2C_SLAVE.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\I2C_PM.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\I2C_SCB_IRQ.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\I2C_SCBCLK.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\I2C_scl.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\I2C_scl_PM.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\I2C_sda.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\I2C_sda_PM.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\main.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\SPI.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\SPI_BOOT.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\SPI_mosi_m.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\SPI_mosi_m_PM.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\SPI_PM.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\SPI_SCB_IRQ.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\SPI_SCBCLK.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\SPI_sclk_m.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\SPI_sclk_m_PM.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\SPI_SPI.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\SPI_SPI_BOOT.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\SPI_SPI_UART.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\SPI_SPI_UART_INT.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\SPI_ss0_m.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\SPI_ss0_m_PM.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\SPI_ss1_m.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\SPI_ss1_m_PM.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\SPI_ss2_m.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\SPI_ss2_m_PM.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\UART.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\UART_BOOT.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\UART_PM.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\UART_SCBCLK.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\UART_SPI_UART.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\UART_SPI_UART_INT.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\UART_tx.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\UART_tx_PM.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\UART_UART.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\UART_UART_BOOT.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Design01.elf</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Design01.hex</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Design01.map</v>
+<v>RP_i2c_to_SPI_v2\Design01\Design01.gpdsc</v>
+<v>RP_i2c_to_SPI_v2\Design01\Design01.rpt</v>
+<v>RP_i2c_to_SPI_v2\Design01\Design01_timing.html</v>
+</ExpandedNodeIds>
+<VisibleNodeIds>
+<v>RP_i2c_to_SPI_v2</v>
+<v>RP_i2c_to_SPI_v2\Design01</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\ant1.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\ant1_PM.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\ant2.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\ant2_PM.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\ant3.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\ant3_PM.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\Cm0plusStart.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\cy_em_eeprom.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\CyBootAsmGnu.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\CyDMA.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\cyfitter_cfg.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\CyFlash.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\CyLFClk.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\CyLib.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\cymetadata.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\cyPm.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\cyutils.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\I2C.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\I2C_BOOT.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\I2C_I2C.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\I2C_I2C_BOOT.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\I2C_I2C_INT.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\I2C_I2C_SLAVE.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\I2C_PM.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\I2C_SCB_IRQ.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\I2C_SCBCLK.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\I2C_scl.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\I2C_scl_PM.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\I2C_sda.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\I2C_sda_PM.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\main.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\SPI.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\SPI_BOOT.lst</v>
+<v>RP_i2c_to_SPI_v2\Design01\CortexM0p\ARM_GCC_541\Debug\Listing Files\SPI_mosi_m.lst</v>
+</VisibleNodeIds>
+</CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
+</TreeStates>
+<TreeKeysV2>
+<v>Datasheet</v>
+</TreeKeysV2>
+<TreeStatesV2>
+<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="">
+<ExpandedNodeIds>
+<v>RP_i2c_to_SPI_v2</v>
+<v>RP_i2c_to_SPI_v2\Design01</v>
+<v>RP_i2c_to_SPI_v2\Design01\PSoC 4 Architecture TRM</v>
+<v>RP_i2c_to_SPI_v2\Design01\System Reference Guides</v>
+<v>RP_i2c_to_SPI_v2\Design01\System Reference Guides\cy_boot_v6_0</v>
+<v>RP_i2c_to_SPI_v2\Design01\System Reference Guides\cy_dmac_v1_10</v>
+<v>RP_i2c_to_SPI_v2\Design01\System Reference Guides\cy_lfclk_v1_20</v>
+<v>RP_i2c_to_SPI_v2\Design01\cy_pins_v2_20</v>
+<v>RP_i2c_to_SPI_v2\Design01\cy_pins_v2_20\cy_pins_v2_20.pdf</v>
+<v>RP_i2c_to_SPI_v2\Design01\SCB_P4_v4_0</v>
+<v>RP_i2c_to_SPI_v2\Design01\SCB_P4_v4_0\SCB_P4_v4_0.pdf</v>
+</ExpandedNodeIds>
+<VisibleNodeIds>
+<v>RP_i2c_to_SPI_v2</v>
+<v>RP_i2c_to_SPI_v2\Design01</v>
+<v>RP_i2c_to_SPI_v2\Design01\PSoC 4 Architecture TRM</v>
+<v>RP_i2c_to_SPI_v2\Design01\System Reference Guides</v>
+<v>RP_i2c_to_SPI_v2\Design01\System Reference Guides\cy_boot_v6_0</v>
+<v>RP_i2c_to_SPI_v2\Design01\System Reference Guides\cy_dmac_v1_10</v>
+<v>RP_i2c_to_SPI_v2\Design01\System Reference Guides\cy_lfclk_v1_20</v>
+<v>RP_i2c_to_SPI_v2\Design01\cy_pins_v2_20</v>
+<v>RP_i2c_to_SPI_v2\Design01\cy_pins_v2_20\cy_pins_v2_20.pdf</v>
+<v>RP_i2c_to_SPI_v2\Design01\SCB_P4_v4_0</v>
+<v>RP_i2c_to_SPI_v2\Design01\SCB_P4_v4_0\SCB_P4_v4_0.pdf</v>
+</VisibleNodeIds>
+</CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
+</TreeStatesV2>
+</CyGuid_1b906a0f-a7b6-4e4d-a428-82f98b53cb35>
+</dataGuid>
+<dataGuid v="5f2be1a5-0687-4501-bb8c-cf21cb8211bf">
+<CyGuid_5f2be1a5-0687-4501-bb8c-cf21cb8211bf type_name="CyDesigner.Common.ProjMgmt.GUI.CyBookmarkData" version="1">
+<indicators />
+</CyGuid_5f2be1a5-0687-4501-bb8c-cf21cb8211bf>
+</dataGuid>
+</userData>
+</CyGuid_fdba8dfd-b15b-4469-9bbb-9e40c3e70997>
+<Unloaded />
+<OpenDocs>
+<name v=".\Design01.cydsn\TopDesign\TopDesign.cysch" />
+<name v=".\Design01.cydsn\Generated_Source\PSoC4\SPI_mosi_m.h" />
+<name v=".\Design01.cydsn\Design01.cydwr" />
+<name v=".\Design01.cydsn\Generated_Source\PSoC4\ant2.h" />
+</OpenDocs>
+<OpenDocsLayout><![CDATA[<?xml version="1.0"?><!--
+
+  Actipro Docking/MDI for WinForms
+  Copyright (c) 2001-2016 Actipro Software LLC.  All rights reserved.
+  http://www.actiprosoftware.com
+
+--><DocumentLayout Version="1.0"><LayoutData><TabbedMdiRootContainer Orientation="Horizontal"><TabbedMdiContainer Size="580, 500" SelectedTabbedMdiWindow="35290134-d3e4-40a4-919e-e2f6975f1c4c"><DocumentWindow Key="C:\Users\Dads PC\OneDrive\Documents\PSoC Creator\RP_i2c_to_SPI_v2\Design01.cydsn\TopDesign\TopDesign.cysch" Guid="4d6930a4-96d2-4587-b540-ee4acadb49e0" /><ToolWindow Key="Start Page:bd4649ab-da6b-4d04-a663-c722b8bf99db:Start Page" Guid="0e183d42-7417-45c6-81ed-cc91ed3ebe46" /><DocumentWindow Key="C:\Users\Dads PC\OneDrive\Documents\PSoC Creator\RP_i2c_to_SPI_v2\Design01.cydsn\Generated_Source\PSoC4\SPI_mosi_m.h" Guid="02e614a5-ab0e-4b08-8bb6-a0635de52b18" /><DocumentWindow Key="C:\Users\Dads PC\OneDrive\Documents\PSoC Creator\RP_i2c_to_SPI_v2\Design01.cydsn\Design01.cydwr" Guid="fbac309c-ca4d-4bd4-9702-af74e0b7fe8b" /><DocumentWindow Key="C:\Users\Dads PC\OneDrive\Documents\PSoC Creator\RP_i2c_to_SPI_v2\Design01.cydsn\Generated_Source\PSoC4\ant2.h" Guid="35290134-d3e4-40a4-919e-e2f6975f1c4c" /></TabbedMdiContainer></TabbedMdiRootContainer><FloatingContainers /></LayoutData></DocumentLayout>]]></OpenDocsLayout>
+<config v="" />
+<AutoUpdate v="true" />
+</CyGuid_843a90a4-0c4b-4e44-991d-05e7fb117a21>
+</CyXmlSerializer>
